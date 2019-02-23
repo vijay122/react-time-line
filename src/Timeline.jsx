@@ -12,13 +12,14 @@ import TimlineItem from "./TimlineItem";
  */
 function getFormattedData(items) {
   const activities = {};
-  items.forEach(({ ts, text }, index) => {
+  items.forEach(({ ts, text, title }, index) => {
     const date = moment(ts);
     const dateStr = date.format("DD MMM YYYY");
     const list = activities[dateStr] || [];
     list.push({
       time: date.format("hh:mm"),
       text,
+      title,
       key: index,
     });
     activities[dateStr] = list;
@@ -36,8 +37,11 @@ function Timeline({ items }) {
           <li className="time-label">
             <span>{d}</span>
           </li>
-          {activities[d].map(({ time, text, key }) => (
+          {activities[d].map(({ time, text,title, key }) => (
+            <div>
+              {title && <label>{title}</label>}
             <TimlineItem time={time} text={text} key={key} />
+            </div>
           ))}
         </ul>
       ))}
